@@ -2,16 +2,13 @@ import React from 'react'
 import styled from 'styled-components';
 import { useContext, useState, useEffect } from 'react';
 import { WebContext } from '../context/webcontext';
-import shop from "../images/cart-circule.svg";
-import { Link } from 'react-router-dom';
+import cartCircule from "../images/cart-circule.svg";
+// import { Link } from 'react-router-dom';
 
 const ContainerCard = styled.div`
   overflow: hidden;
-  /* box-shadow: 0px 0px 15px -5px; */
   height: 444px;
   width: 386px;
-  /* left: 0px;
-  top: 0px; */
   border-radius: 0px;
   padding: 16px;
   &:hover {
@@ -22,8 +19,6 @@ const ContainerCard = styled.div`
 `;
 const ImageContainer = styled.div`
   overflow: hidden;
-  /* height: 338px;
-  width: 356px; */
   left: 0px;
   top: -5px;
   border-radius: 0px;
@@ -32,11 +27,12 @@ const ImageContainer = styled.div`
 const CardContent=styled.div`
 margin: 1rem;
 margin-top: 0.5rem;
+color: black;
+
 
 `;
 
 const CardTitle = styled.div`
-  /* margin-bottom: 0.5rem; */
   font-family: Raleway;
   font-size: 18px;
   font-style: normal;
@@ -48,6 +44,8 @@ const CardTitle = styled.div`
   width: 354px;
   left: 0px;
   top: 0px;
+  display: inline-block;
+  text-decoration: none;
   /* border-radius: nullpx; */
 `;
 
@@ -64,7 +62,9 @@ const CardBody = styled.div`
   width: 58px;
   left: 0px;
   top: 0px;
-  /* border-radius: nullpx; */
+  display: inline-block;
+  text-decoration: none;
+
 `;
 
 function Card(props) {
@@ -104,7 +104,7 @@ function Card(props) {
       </ImageContainer>
       <CardContent>
         {showShoppingBag && (
-            <img src={shop}></img>
+            <img src={cartCircule} style={{marginLeft:250, position:'absolute'}} />
         )}
         <CardTitle>{props.title}</CardTitle>
         <CardBody>

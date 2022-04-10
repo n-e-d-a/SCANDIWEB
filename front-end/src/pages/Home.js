@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import fetchProductData from "../api/fetchProductData";
+import React, { useEffect, useContext } from "react";
+// import fetchProductData from "../api/fetchProductData";
 // import EachProduct from "./EachProduct";
 import Card from "../components/Card";
 import { Link } from "react-router-dom";
@@ -8,45 +8,61 @@ import { WebContext } from "../context/webcontext";
 
 
 const MainContainer = styled.div`
+  flex: 1;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
   gap: 40px;
   overflow-x: auto;
   margin-left: 100px;
   margin-bottom: 103px;
   text-decoration  :none ;
+  position: relative;
+  z-index: 0;
 `;
 
-const TitleWomen=styled.h2`
+const Title=styled.h2`
 font-size: 42px;
 font-weight: 400px;
 margin-left: 101px;
 margin-top: 80px;
+text-decoration: none;
+`;
+
+const OutOfStock = styled.div`
+  position: absolute;
+  padding-top: 190px;
+  padding-left: 120px;
+  font-family: Raleway;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 38px;
+  letter-spacing: 0px;
+  text-align: left;
 `;
 
 export default function Home() {
-  // const [datas, setDatas] = useState([]);
-  const { currencys,currentCurrency,currentCategory, setCurrentCategory, datas, setDatas } = useContext(WebContext)
-  // useEffect(async () => {
-  //   const mydata = await fetchProductData(currentCategory);
-  //   setDatas(mydata);
-  //   // console.log(datas);
-  // }, []);
+  
+  const { currencys,currentCurrency,currentCategory, setCurrentCategory, datas, setDatas, state } = useContext(WebContext)
+  
   useEffect(()=>{
 
   },[currentCurrency])
   return (
-    <>
-      <TitleWomen>{currentCategory}</TitleWomen>
+    <div style={state? {opacity: '60%', pointerEvents: 'none', zIndex: 0}: {}}>
+      <Title>{currentCategory.toUpperCase()}</Title>
 
       <MainContainer>
         {console.log(datas)}
         {datas.map((data, index) => (
           <div
             key={index}
-            style={data.inStock ? { textDecoration: "none" } : { opacity:0.5}}
+            style={data.inStock ? { textDecoration: "none" } : { opacity: 0.5 }}
           >
-            {!data.inStock && <div>out of stock</div>}
+            {!data.inStock && (
+              <OutOfStock >out of stock</OutOfStock>
+            )}
             <Link to="/product" state={{ product: data }}>
               <Card
                 title={data.name}
@@ -58,6 +74,6 @@ export default function Home() {
           </div>
         ))}
       </MainContainer>
-    </>
+    </div>
   );
 }

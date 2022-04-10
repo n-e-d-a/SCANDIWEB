@@ -1,6 +1,6 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect } from "react";
 import fetchCurrencies from "../api/fetchCurrencies";
-import fetchData from "../api/fetchData";
+// import fetchData from "../api/fetchData";
 import fetchProductData from "../api/fetchProductData";
 
 export const WebContext = createContext();
@@ -8,6 +8,12 @@ export const WebContext = createContext();
 const WebProvider = ({ children }) => {
   const [currentCurrency, setCurrentCurrency] = useState();
   const [currentCategory, setCurrentCategory] = useState('all');
+  const [state, setState] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(() => {
+    const price = localStorage.getItem("totalPrice")
+    const initialValue = JSON.parse(price)
+    return initialValue || 0;
+  })
   const [amount, setAmount] = useState(1)
   const [orders, setOrders] = useState(() => {
   // getting stored value
@@ -26,6 +32,10 @@ const WebProvider = ({ children }) => {
     return true;
   };
   const addOrder = (newProduct) => {
+    const newPrice = totalPrice + newProduct.prices[0].amount
+    setTotalPrice(newPrice)
+    localStorage.setItem("totalPrice", JSON.stringify(newPrice));
+    // console.log(newPrice)
     const exists = orders.some(order=> order.id === newProduct.id && comparison(order.selectedAttributes, newProduct.selectedAttributes)===true)
     // console.log(exists)
     if (exists){
@@ -55,6 +65,11 @@ const WebProvider = ({ children }) => {
    
   }
   const removeOrder = (product) => {
+    const newPrice = totalPrice - product.prices[0].amount
+    console.log(newPrice)
+    setTotalPrice(newPrice)
+    localStorage.setItem("totalPrice", JSON.stringify(newPrice));
+    console.log(newPrice)
     if (product.amount===1){
       const newOrders = orders.filter(function (order) {
         return order != product;
@@ -109,7 +124,10 @@ const WebProvider = ({ children }) => {
         orders,
         setOrders,
         addOrder,
-        removeOrder
+        removeOrder,
+        totalPrice,
+        state,
+        setState
       }}
     >
       {children}

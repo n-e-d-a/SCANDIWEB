@@ -1,22 +1,21 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components';
-import { WebContext } from '../context/webcontext';
-// import { BoxSize } from '../pages/EachProduct';
+import React, { useContext, useEffect } from "react";
+import styled from "styled-components";
+import { WebContext } from "../context/webcontext";
+// import { BoxSize } from "../pages/EachProduct";
 import SimpleImageSlider from "react-simple-image-slider";
-
 
 const Box = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 `;
 
 const AddMinus = styled.div`
-  height: 45px;
-  width: 45px;
-  font-weight: 50px;
-  font-size: 50px;
+  height: 24px;
+  width: 24px;
+  font-weight: 25px;
+  font-size: 25px;
   border: 1px solid black;
   display: flex;
   justify-content: center;
@@ -31,38 +30,37 @@ const AddMinus = styled.div`
 `;
 
 function RightEachShoppingProduct(props) {
-  const {orders, setOrders, addOrder, removeOrder} = useContext(WebContext)
+  const { orders, setOrders, addOrder, removeOrder } = useContext(WebContext);
   const handleIncrement = () => {
-    const newOrder = props.product
-    addOrder(newOrder)
-  }
+    const newOrder = props.product;
+    addOrder(newOrder);
+  };
   const handleDecrement = () => {
   
-    removeOrder(props.product)
-  }
+    removeOrder(props.product);
+  };
   return (
-    <div style={{display: 'flex'}}>
+    <>
       <Box>
-        <AddMinus style={{ marginBottom: 94 }} onClick={handleIncrement}>
+        <AddMinus style={{ marginBottom: 50 }} onClick={handleIncrement}>
           +
         </AddMinus>
-        <div style={{ marginBottom: 30, marginTop: -60 , marginLeft:19}}>
+        <div style={{ marginBottom: 30, marginTop: -30, marginLeft: 10 }}>
           {props.product.amount}
         </div>
         <AddMinus onClick={handleDecrement}>-</AddMinus>
       </Box>
       <SimpleImageSlider
-      // style={{zIndex:0}}
-        width={200}
-        height={200}
+        width={85}
+        height={85}
         images={props.images}
         showBullets={false}
         showNavs={true}
-        navSize={30}
+        navSize={18}
         navMargin={0}
       />
-    </div>
+    </>
   );
 }
 
-export default RightEachShoppingProduct
+export default RightEachShoppingProduct;

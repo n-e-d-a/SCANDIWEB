@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import {  useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { WebContext } from "../context/webcontext";
-// import Product1 from "../images/Product1.png";
+
 
 const SingleProduct = styled.section`
   display: flex;
@@ -15,8 +15,9 @@ const SingleProduct = styled.section`
 const LeftSection = styled.div`
   display: flex;
   gap: 10px;
-  .ul {
+  .li {
     text-decoration: none;
+    list-style: none;
   }
 `;
 
@@ -66,6 +67,11 @@ export const BoxSize = styled.div`
   margin-right: 12px;
   align-items: center;
   text-align: center;
+  cursor: pointer;
+  &:hover{
+    background-color: black;
+    color: white;
+  }
 `;
 
 
@@ -85,6 +91,10 @@ const Button = styled.button`
   margin-top: 20px;
   color: white;
   border: none;
+  /* cursor: pointer; */
+  &:hover {
+    background-color: #55bb6f;
+  }
 `;
 
 const Description = styled.p`
@@ -118,12 +128,12 @@ flex-direction: column;
 function EachProduct() {
   const location = useLocation();
   const product = location.state?.product;
-  const { currentCurrency, setCurrentCurrency, orders, setOrders, addOrder } =
+  const { state, currentCurrency, setCurrentCurrency, orders, setOrders, addOrder } =
     useContext(WebContext);
   const [currentImage, setCurrentImage] = useState(product.gallery[0]);
   const [myprice, setMyprice] = useState("");
   const [selectedAttributes, setSelectedAttributes] = useState([]);
-  const [selectedAttr, setSelectedAttr] = useState(null)
+  // const [selectedAttr, setSelectedAttr] = useState(null)
   useEffect(() => {
     if (currentCurrency != null) {
       // console.log(currentCurrency.label);
@@ -145,11 +155,13 @@ function EachProduct() {
     }
   }, [currentCurrency]);
   const handleOrder = () => {
-    const newProduct = {
-      ...product,
-      selectedAttributes,
-    };
-    addOrder(newProduct)
+    if (product.inStock){
+      const newProduct = {
+        ...product,
+        selectedAttributes,
+      };
+      addOrder(newProduct)
+    }
   };
   const handleAttributeSelect = (name, value) => {
       const attr = selectedAttributes.find(selectedAttribute=> selectedAttribute.attributeName === name)
@@ -174,12 +186,15 @@ function EachProduct() {
   };
  
   return (
-    <div>
+    <div style={state? {opacity: '60%', pointerEvents: 'none'}: {}}>
       <SingleProduct>
         <LeftSection>
           <ul>
             {product.gallery.map((image, index) => (
-              <li onClick={() => setCurrentImage(image)}>
+              <li
+                style={{ listStyleType: "none" }}
+                onClick={() => setCurrentImage(image)}
+              >
                 <img src={image} alt="" width="100" height="100" />
               </li>
             ))}
@@ -192,10 +207,6 @@ function EachProduct() {
         <RightSection>
           <ProductID>{product.id}</ProductID>
           <ProductName>{product.name}</ProductName>
-          {/* <SizePriceTitle>SIZE</SizePriceTitle>
-          <BoxSize>111</BoxSize>
-          <BoxSize>111</BoxSize> */}
-          {/* {console.log("selectedattributes", selectedAttributes)} */}
           {product.attributes.map((attribute, index) => (
             <Attribute>
               <AttributeTitle>{attribute.name}</AttributeTitle>
@@ -214,7 +225,9 @@ function EachProduct() {
                           selectedAttribute.attributeName === attribute.name &&
                           selectedAttribute.selectedAttributeValue ===
                             item.value
-                      ) ?{ backgroundColor: "black", color:"white" } : {}
+                      )
+                        ? { backgroundColor: "black", color: "white" }
+                        : {}
                     }
                   >
                     {item.displayValue}
@@ -227,7 +240,13 @@ function EachProduct() {
           <Price>
             {myprice} {currentCurrency != null && <>{currentCurrency.symbol}</>}
           </Price>
-          <Button onClick={handleOrder}>ADD TO CART</Button>
+          {/* {console.log(product.inStock)} */}
+          <Button
+            onClick={handleOrder}
+            style={product.inStock ? { cursor:"pointer" } : { cursor: "not-allowed" }}
+          >
+            ADD TO CART
+          </Button>
           <Description
             dangerouslySetInnerHTML={{ __html: product.description }}
           />

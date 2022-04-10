@@ -2,19 +2,6 @@ import React from 'react'
 import styled from 'styled-components';
 import { BoxSize, SizePriceTitle } from '../pages/EachProduct';
 
-//  const LeftShoppingCart = styled.div`
-//    display: flex;
-//    flex-direction: column;
-//    gap: 1rem;
-//    justify-content: space-between;
-//  `;
-
-//  const RightShoppingCart = styled.div`
-//    display: flex;
-//    justify-content: space-between;
-//    align-items: center;
-//  `;
-
  const ProductBrand = styled.div`
    font-family: Raleway;
    font-size: 30px;
@@ -51,7 +38,7 @@ import { BoxSize, SizePriceTitle } from '../pages/EachProduct';
 function LeftEachShoppingProduct(props) {
   return (
     <div>
-      {/* <LeftShoppingCart> */}
+     
       <ProductBrand>{props.brand}</ProductBrand>
       <ProductName>{props.name}</ProductName>
       <ProductPrices>
@@ -62,7 +49,6 @@ function LeftEachShoppingProduct(props) {
 
       {props.attributes.map((attribute, index) => (
         <>
-          <div>{attribute.name}</div>
           <SizePriceTitle>
             {attribute.items.map((item, index) => (
               <BoxSize
@@ -84,8 +70,6 @@ function LeftEachShoppingProduct(props) {
         </>
       ))}
 
-      {/* </LeftShoppingCart>
-      <RightShoppingCart>aaa <br/> bbb</RightShoppingCart> */}
     </div>
   );
 }
