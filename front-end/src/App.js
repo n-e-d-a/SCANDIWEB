@@ -5,8 +5,7 @@ import EachProduct from './pages/EachProduct';
 import ShoppingCart from './pages/ShoppingCart';
 import {AppContainer} from "./components/Container.style"
 import { GlobalStyle } from './styles/GlobalStyles.style';
-import { WebContext } from './context/webcontext';
-import { useContext } from 'react';
+
 
 
 function App() {
